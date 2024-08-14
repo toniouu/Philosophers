@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:27 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/13 16:49:04 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:39:03 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,21 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_philo
+typedef struct s_prog
 {
 	int	nbr;
 	int	ttd;
 	int	tte;
 	int	tts;
 	int	tme;
+}	t_prog;
+
+typedef struct s_philo
+{
+	int				n;
+	pthread_t		philo;
+	pthread_mutex_t	mutex;
+	struct s_philo	*next;
 }	t_philo;
 
 
