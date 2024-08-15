@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:27 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/14 14:39:03 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/15 11:35:05 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,40 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include "colors.h"
 
-typedef struct s_prog
+typedef pthread_mutex_t	t_mtx;
+
+typedef struct s_fork
 {
-	int	nbr;
-	int	ttd;
-	int	tte;
-	int	tts;
-	int	tme;
-}	t_prog;
+	t_mtx	fork;
+	int		fork_id;
+}	t_fork;
 
 typedef struct s_philo
 {
-	int				n;
+	int				id;
 	pthread_t		philo;
-	pthread_mutex_t	mutex;
-	struct s_philo	*next;
+	t_fork			*left;
+	t_fork			*right;
 }	t_philo;
 
+typedef struct s_prog
+{
+	long	nbr;
+	long	ttd;
+	long	tte;
+	long	tts;
+	long	limits;
+	t_philo	*philos;
+	t_fork	*forks;
+}	t_prog;
 
-int		ft_strlen(char *s);
+void	print_error(char *error);
+
 int		ft_is_digit(char c);
 int		check_if_not_digit(char **av);
 
 long	ft_atoi(char *nbr);
-
-void	ft_print_fd(char *s, int fd);
 
 #endif
