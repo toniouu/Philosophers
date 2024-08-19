@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:27 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/15 11:44:53 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/19 13:59:54 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,15 @@ typedef struct s_prog
 }	t_prog;
 
 void	print_error(char *error);
+void	init_forks(t_prog *prog);
+void	init_philos(t_prog *prog);
+void	*routine(void *arg);
 
 int		ft_is_digit(char c);
 int		check_if_not_digit(char **av);
 
 long	ft_atoi(char *nbr);
+
+struct timeval	*my_get_time();
 
 #endif
