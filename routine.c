@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 08:26:03 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/19 14:21:12 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:36:16 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	*routine(void *arg)
 	t_prog	*prog;
 
 	prog = (t_prog *)arg;
-	philo_thinking(*prog->philos);
-	philo_eating(*prog->philos);
-	philo_sleeping(*prog->philos);
-	return (NULL);
+	while (my_get_time()->tv_sec < prog->start + (20 * prog->nbr))
+		usleep(2);
+	while ()
+	
+	
 }

@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:18 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/19 08:25:41 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/20 09:21:36 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	main(int ac, char **av)
 	if ((ac != 5 && ac != 6) || check_if_not_digit(av) == -1
 		|| valid_arguments(av, &prog) == -1)
 		return (print_error("Les arguments ne sont pas valides !"), -1);
-	init_philos(&prog);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:27 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/19 13:59:54 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/20 10:08:43 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ typedef struct s_philo
 {
 	int				id;
 	pthread_t		philo;
-	t_fork			*left;
-	t_fork			*right;
+	int				l_fork;
+	int				r_fork;
 }	t_philo;
 
 typedef struct s_prog
@@ -44,13 +44,13 @@ typedef struct s_prog
 	long	tte;
 	long	tts;
 	long	limits;
-	t_philo	*philos;
-	t_fork	*forks;
+	long	start;
+	t_philo	philos[250];
+	t_fork	forks[250];
 }	t_prog;
 
 void	print_error(char *error);
 void	init_forks(t_prog *prog);
-void	init_philos(t_prog *prog);
 void	*routine(void *arg);
 
 int		ft_is_digit(char c);
