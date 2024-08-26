@@ -6,11 +6,23 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:42:47 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/26 11:31:57 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:57:44 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	is_dead(t_prog *prog, t_philo philo)
+{
+	long	act;
+
+	act = my_get_time();
+	if (my_get_time() - philo.last_eat < prog->ttd)
+	{
+		return (-1);
+	}
+	return (0);
+}
 
 int	ft_is_digit(char c)
 {
@@ -43,7 +55,7 @@ int	my_usleep(t_prog *prog, t_philo philo, long time)
 	{
 		if (my_get_time() - philo.last_eat >= prog->ttd)
 		{
-			print_action(prog, philo, RED BOLD"is dead"RESET);
+			prog->end_flags = 1;
 			return (-1);
 		}
 		usleep(100);

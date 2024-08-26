@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:18 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/26 11:02:14 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:48:25 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ int	valid_arguments(char **av, t_prog *prog)
 int	main(int ac, char **av)
 {
 	t_prog	prog;
+	void	*res;
 	int		i;
 
 	i = 0;
+	res = NULL;
 	if ((ac != 5 && ac != 6) || check_if_not_digit(av) == -1
 		|| valid_arguments(av, &prog) == -1)
 		return (print_error("Les arguments ne sont pas valides !"), -1);
-	/* ETAPE 1 : INITIALISATION DU PROGRAMME, DES PHILOS ET DES FOURCHETTES */
 	if (init_prog(&prog) == -1)
 		return (0);
 	while (i < prog.nbr)
@@ -55,15 +56,17 @@ int	main(int ac, char **av)
 		i++;
 	}
 	i = 0;
+	pthread_create(&prog.monitor, NULL, monitor_routine, &prog);
+	pthread_join(prog.monitor, res);
+	if (res == NULL)
+	{
+		return (-1);
+	}
 	while (i < prog.nbr)
 	{
-		pthread_join(prog.philos[i].philo, NULL);
+		pthread_join(prog.philos[i].philo, res);
 		i++;
 	}
-	/* ETAPE 2 : CREATION DES THREADS (ROUTINES) POUR CHAQUE PHILOSOPHE */
-	
-
-
 
 	return (0);
 }
