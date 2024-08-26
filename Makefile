@@ -2,7 +2,7 @@ NAME = philo
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.c philo.c utils.c all_errors.c ft_atoi.c routine.c
+SRCS = main.c philo.c utils.c all_errors.c ft_atoi.c routine.c time.c
 
 OBJS = ${SRCS:.c=.o}
 

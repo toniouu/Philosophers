@@ -18,6 +18,13 @@ void    *test1(void *arg)
         }
         pthread_mutex_unlock(&mutex);
         printf("Mutex verrouille par le thread 1 : %d\n\n", i);
+        pthread_mutex_lock(&mutex);
+        while (i < 80)
+        {
+            printf("Mutex verrouille par le thread 1 : %d\n\n", i);
+            i++;
+        }
+        pthread_mutex_unlock(&mutex);
         i++;
     }
     return (NULL);
