@@ -6,11 +6,24 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:18 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/26 14:48:25 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:32:24 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	init_philo(t_prog *prog)
+{
+	int		i;
+
+	i = 0;
+	while (i < prog->nbr)
+	{
+		pthread_create(&prog->philos[i].philo, NULL, philo_routine, &prog->philos[i]);
+		i++;
+	}
+	return (0);
+}
 
 int	valid_arguments(char **av, t_prog *prog)
 {
@@ -40,8 +53,8 @@ int	valid_arguments(char **av, t_prog *prog)
 int	main(int ac, char **av)
 {
 	t_prog	prog;
-	void	*res;
 	int		i;
+	void	*res;
 
 	i = 0;
 	res = NULL;
@@ -50,23 +63,13 @@ int	main(int ac, char **av)
 		return (print_error("Les arguments ne sont pas valides !"), -1);
 	if (init_prog(&prog) == -1)
 		return (0);
-	while (i < prog.nbr)
-	{
-		pthread_create(&prog.philos[i].philo, NULL, philo_routine, &prog.philos[i]);
-		i++;
-	}
-	i = 0;
+	init_philo(&prog);
 	pthread_create(&prog.monitor, NULL, monitor_routine, &prog);
 	pthread_join(prog.monitor, res);
-	if (res == NULL)
-	{
-		return (-1);
-	}
 	while (i < prog.nbr)
 	{
-		pthread_join(prog.philos[i].philo, res);
+		pthread_join(prog.philos[i].philo, NULL);
 		i++;
 	}
-
 	return (0);
 }
