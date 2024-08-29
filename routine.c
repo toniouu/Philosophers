@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 08:26:03 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/29 14:15:05 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:42:35 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,20 @@ void	*monitor_routine(void *arg)
 	char	*end;
 
 	prog = (void *)arg;
+	prog->l_flags = 0;
 	end = RED BOLD"died"RESET;
 	while (1)
 	{
 		if (no_more_life(prog) == -1)
 		{
-			printf("%ld %d %s\n", my_get_time() - prog->start, prog->end_flags, end);
+			printf("%ld %d %s\n",
+				my_get_time() - prog->start, prog->end_flags, end);
 			return (NULL);
 		}
-		if (prog->end_flags == prog->nbr)
+		if (prog->l_flags == prog->nbr)
 		{
-			printf(MAGENTA BOLD"END OF PROG\n"RESET);
+			usleep(1000);
+			printf(MAGENTA BOLD"T H E   E N D  !\n"RESET);
 			return (NULL);
 		}
 	}
@@ -46,8 +49,8 @@ int	philo_eating(t_prog *prog, t_philo *philo)
 	print_action(prog, *philo, CYAN"has taken a fork"RESET);
 	pthread_mutex_lock(&prog->forks[philo->l_fork]);
 	print_action(prog, *philo, CYAN"has taken a fork"RESET);
-	philo->last_eat = my_get_time();
 	print_action(prog, *philo, GREEN"is eating"RESET);
+	philo->last_eat = my_get_time();
 	usleep(prog->tte * 1000);
 	philo->limits++;
 	pthread_mutex_unlock(&prog->forks[philo->l_fork]);
@@ -60,8 +63,9 @@ int	philo_sleeping(t_prog *prog, t_philo *philo)
 	if (prog->end_flags != 0)
 		return (-1);
 	print_action(prog, *philo, YELLOW"is sleeping"RESET);
-	usleep(prog->tts * 1000);
-	return (0);	
+	if (my_usleep(prog, *philo, prog->tts) == -1)
+		return (-1);
+	return (0);
 }
 
 int	philo_thinking(t_prog *prog, t_philo *philo)
@@ -70,9 +74,10 @@ int	philo_thinking(t_prog *prog, t_philo *philo)
 
 	if (prog->end_flags != 0)
 		return (-1);
-	ttt = my_get_time() - philo->last_eat - prog->tte - prog->tts;
+	ttt = prog->ttd - prog->tte - prog->tts - (prog->nbr - 1);
 	print_action(prog, *philo, BLUE"is thinking"RESET);
-	usleep(ttt * 1000);
+	if (my_usleep(prog, *philo, ttt) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -95,8 +100,8 @@ void	*philo_routine(void *arg)
 			return (NULL);
 		if (philo_thinking(prog, philo) == -1)
 			return (NULL);
-		if (philo->limits == philo->prog->limits)
-			break;
+		if (philo->limits == prog->limits)
+			break ;
 	}
 	return (prog);
 }

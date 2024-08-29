@@ -6,11 +6,21 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:18 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/29 14:32:24 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:05:16 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	destroy_all(t_prog *prog)
+{
+	int	i;
+
+	i = 0;
+	while (i < prog->nbr)
+		pthread_mutex_destroy(&prog->forks[i++]);
+	return (0);
+}
 
 int	init_philo(t_prog *prog)
 {
@@ -19,7 +29,8 @@ int	init_philo(t_prog *prog)
 	i = 0;
 	while (i < prog->nbr)
 	{
-		pthread_create(&prog->philos[i].philo, NULL, philo_routine, &prog->philos[i]);
+		pthread_create(&prog->philos[i].philo,
+			NULL, philo_routine, &prog->philos[i]);
 		i++;
 	}
 	return (0);
@@ -66,10 +77,15 @@ int	main(int ac, char **av)
 	init_philo(&prog);
 	pthread_create(&prog.monitor, NULL, monitor_routine, &prog);
 	pthread_join(prog.monitor, res);
+	if (res == NULL)
+	{
+		destroy_all(&prog);
+		return (-1);
+	}
 	while (i < prog.nbr)
 	{
 		pthread_join(prog.philos[i].philo, NULL);
 		i++;
 	}
-	return (0);
+	return (destroy_all(&prog), 0);
 }

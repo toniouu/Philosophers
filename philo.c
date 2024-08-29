@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:41:06 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/29 14:34:22 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:57:32 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	no_more_life(t_prog *prog)
 		}
 		if (prog->philos[i].limits == prog->limits)
 		{
-			prog->end_flags++;
+			prog->l_flags++;
 			return (0);
 		}
 		i++;
@@ -57,7 +57,6 @@ int	init_prog(t_prog *prog)
 	i = -1;
 	prog->start = my_get_time() + (25 * prog->nbr);
 	prog->end_flags = 0;
-	// pthread_mutex_init(&prog->flags, NULL);
 	while (i++ < prog->nbr - 1)
 	{
 		if (pthread_mutex_init(&prog->forks[i], NULL) != 0)

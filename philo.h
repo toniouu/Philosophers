@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:27 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/29 14:33:34 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:11:05 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include "colors.h"
 
 typedef pthread_mutex_t	t_mtx;
-typedef struct s_prog t_prog;
+typedef struct s_prog	t_prog;
 
 typedef struct s_philo
 {
@@ -44,6 +44,7 @@ typedef struct s_prog
 	long			limits;
 	long			start;
 	int				end_flags;
+	int				l_flags;
 	pthread_t		monitor;
 	t_philo			philos[250];
 	t_mtx			forks[250];
@@ -57,12 +58,11 @@ void	*monitor_routine(void *arg);
 int		ft_is_digit(char c);
 int		check_if_not_digit(char **av);
 int		init_prog(t_prog *prog);
-int		my_usleep(t_prog *prog, t_philo philo, long time);
-int		is_dead(t_prog *prog, t_philo *philo);
 int		one_philo(t_prog *prog, t_philo *philo);
 int		no_more_life(t_prog *prog);
+int		my_usleep(t_prog *prog, t_philo philo, long t);
 
 long	ft_atoi(char *nbr);
-long	my_get_time();
+long	my_get_time(void);
 
 #endif
