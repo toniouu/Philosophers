@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:18 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/29 15:05:16 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:05:00 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int	destroy_all(t_prog *prog)
 
 	i = 0;
 	while (i < prog->nbr)
-		pthread_mutex_destroy(&prog->forks[i++]);
+	{
+		pthread_mutex_destroy(&prog->forks[i]);
+		i++;
+	}
 	return (0);
 }
 
@@ -29,8 +32,15 @@ int	init_philo(t_prog *prog)
 	i = 0;
 	while (i < prog->nbr)
 	{
-		pthread_create(&prog->philos[i].philo,
-			NULL, philo_routine, &prog->philos[i]);
+		if (pthread_create(&prog->philos[i].philo,
+			NULL, philo_routine, &prog->philos[i]) != 0)
+			{
+				while (--i >= 0)
+				{
+					pthread_join(prog->philos[i].philo, NULL);
+				}
+				return (-1);
+			}
 		i++;
 	}
 	return (0);
@@ -72,9 +82,8 @@ int	main(int ac, char **av)
 	if ((ac != 5 && ac != 6) || check_if_not_digit(av) == -1
 		|| valid_arguments(av, &prog) == -1)
 		return (print_error("Les arguments ne sont pas valides !"), -1);
-	if (init_prog(&prog) == -1)
+	if (init_prog(&prog) == -1 || init_philo(&prog) == -1)
 		return (0);
-	init_philo(&prog);
 	pthread_create(&prog.monitor, NULL, monitor_routine, &prog);
 	pthread_join(prog.monitor, res);
 	if (res == NULL)

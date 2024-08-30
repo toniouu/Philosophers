@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 08:26:03 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/29 15:42:35 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:24:19 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	philo_eating(t_prog *prog, t_philo *philo)
 	if (one_philo(prog, philo) == -1)
 		return (-1);
 	if (philo->id % 2 == 0)
-		usleep(100);
+		usleep(500);
 	pthread_mutex_lock(&prog->forks[philo->r_fork]);
 	print_action(prog, *philo, CYAN"has taken a fork"RESET);
 	pthread_mutex_lock(&prog->forks[philo->l_fork]);
@@ -74,7 +74,7 @@ int	philo_thinking(t_prog *prog, t_philo *philo)
 
 	if (prog->end_flags != 0)
 		return (-1);
-	ttt = prog->ttd - prog->tte - prog->tts - (prog->nbr - 1);
+	ttt = my_get_time() - philo->last_eat - prog->tte - prog->tts;
 	print_action(prog, *philo, BLUE"is thinking"RESET);
 	if (my_usleep(prog, *philo, ttt) == -1)
 		return (-1);

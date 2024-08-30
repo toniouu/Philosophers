@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:42:47 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/29 15:10:55 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:09:11 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ int	my_usleep(t_prog *prog, t_philo philo, long t)
 	while (my_get_time() <= act + t)
 	{
 		if (my_get_time() - philo.last_eat >= prog->ttd)
+			return (-1);
+		usleep(500);
+	}
+	return (0);
+}
+
+int	my_eating_usleep(t_prog *prog, long t)
+{
+	long	act;
+
+	act = my_get_time();
+	while (my_get_time() <= act + t)
+	{
+		if (prog->end_flags != 0)
 			return (-1);
 		usleep(500);
 	}
