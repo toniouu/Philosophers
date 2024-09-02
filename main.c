@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:18 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/30 11:05:00 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/02 10:58:20 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	init_philo(t_prog *prog)
 	while (i < prog->nbr)
 	{
 		if (pthread_create(&prog->philos[i].philo,
-			NULL, philo_routine, &prog->philos[i]) != 0)
+				NULL, philo_routine, &prog->philos[i]) != 0)
+		{
+			while (--i >= 0)
 			{
-				while (--i >= 0)
-				{
-					pthread_join(prog->philos[i].philo, NULL);
-				}
-				return (-1);
+				pthread_join(prog->philos[i].philo, NULL);
 			}
+			return (-1);
+		}
 		i++;
 	}
 	return (0);
@@ -86,11 +86,6 @@ int	main(int ac, char **av)
 		return (0);
 	pthread_create(&prog.monitor, NULL, monitor_routine, &prog);
 	pthread_join(prog.monitor, res);
-	if (res == NULL)
-	{
-		destroy_all(&prog);
-		return (-1);
-	}
 	while (i < prog.nbr)
 	{
 		pthread_join(prog.philos[i].philo, NULL);

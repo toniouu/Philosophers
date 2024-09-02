@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:41:06 by atovoman          #+#    #+#             */
-/*   Updated: 2024/08/30 13:12:21 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/02 11:52:24 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	init_prog(t_prog *prog)
 	int	i;
 
 	i = -1;
-	prog->start = my_get_time() + (30 * prog->nbr);
+	prog->start = my_get_time() + (50 * prog->nbr);
 	prog->end_flags = 0;
 	while (i++ < prog->nbr - 1)
 	{
@@ -74,6 +74,7 @@ int	init_prog(t_prog *prog)
 		prog->philos[i].last_eat = prog->start;
 		prog->philos[i].limits = 0;
 		prog->philos[i].prog = prog;
+		prog->philos[i].starting = 0;
 	}
 	return (0);
 }
