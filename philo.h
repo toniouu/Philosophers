@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:27 by atovoman          #+#    #+#             */
-/*   Updated: 2024/09/02 11:51:44 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:09:33 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		no_more_life(t_prog *prog);
 int		my_usleep(t_prog *prog, t_philo philo, long t);
 int		my_eating_usleep(t_prog *prog, long t);
 int		destroy_all(t_prog *prog);
+int		is_finished(t_prog *prog);
 
 long	ft_atoi(char *nbr);
 long	my_get_time(void);

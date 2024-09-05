@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 08:26:03 by atovoman          #+#    #+#             */
-/*   Updated: 2024/09/02 12:57:34 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:51:02 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	*monitor_routine(void *arg)
 	prog = (void *)arg;
 	prog->l_flags = 0;
 	end = RED BOLD"died"RESET;
+	while (my_get_time() < prog->start)
+		usleep(1);
 	while (1)
 	{
 		if (no_more_life(prog) == -1)
@@ -28,18 +30,15 @@ void	*monitor_routine(void *arg)
 				my_get_time() - prog->start, prog->end_flags, end);
 			return (NULL);
 		}
-		if (prog->l_flags == prog->nbr)
-		{
-			prog->end_flags = -1;
+		if (is_finished(prog) == 0)
 			break ;
-		}
+		usleep(100);
 	}
 	return (prog);
 }
 
 int	philo_eating(t_prog *prog, t_philo *philo)
 {
-	philo->last_eat = my_get_time();
 	if (one_philo(prog, philo) == -1)
 		return (-1);
 	if (philo->id % 2 == 0 && philo->starting == 0)
@@ -58,9 +57,9 @@ int	philo_eating(t_prog *prog, t_philo *philo)
 	print_action(prog, *philo, GREEN"is eating"RESET);
 	philo->last_eat = my_get_time();
 	usleep(prog->tte * 1000);
-	philo->limits++;
 	pthread_mutex_unlock(&prog->forks[philo->l_fork]);
 	pthread_mutex_unlock(&prog->forks[philo->r_fork]);
+	philo->limits++;
 	if (prog->end_flags != 0)
 		return (-1);
 	return (0);
@@ -83,7 +82,7 @@ int	philo_thinking(t_prog *prog, t_philo *philo)
 	if (prog->end_flags != 0)
 		return (-1);
 	ttt = my_get_time() - philo->last_eat
-		- prog->tte - prog->tts + (prog->nbr + 1);
+		- prog->tte - prog->tts + (prog->nbr);
 	print_action(prog, *philo, BLUE"is thinking"RESET);
 	if (my_usleep(prog, *philo, ttt) == -1)
 		return (-1);
@@ -103,13 +102,13 @@ void	*philo_routine(void *arg)
 		usleep(1);
 	while (1)
 	{
-		if (philo_eating(prog, philo) == -1 || philo->prog->end_flags != 0)
-			break ;
-		if (philo_sleeping(prog, philo) == -1 || philo->prog->end_flags != 0)
-			break ;
-		if (philo_thinking(prog, philo) == -1 || philo->prog->end_flags != 0)
+		if (philo_eating(prog, philo) == -1)
 			break ;
 		if (philo->limits == prog->limits)
+			break ;
+		if (philo_sleeping(prog, philo) == -1)
+			break ;
+		if (philo_thinking(prog, philo) == -1)
 			break ;
 	}
 	return (NULL);

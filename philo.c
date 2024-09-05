@@ -6,11 +6,29 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:41:06 by atovoman          #+#    #+#             */
-/*   Updated: 2024/09/02 11:52:24 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:43:36 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	is_finished(t_prog *prog)
+{
+	int	i;
+	int	result;
+
+	i = 0;
+	result = 0;
+	while (i < prog->nbr)
+	{
+		if (prog->philos[i].limits == prog->limits)
+			result++;
+		if (result == prog->nbr)
+			return (0);
+		i++;
+	}
+	return (-1);
+}
 
 int	no_more_life(t_prog *prog)
 {
@@ -21,15 +39,11 @@ int	no_more_life(t_prog *prog)
 	{
 		if (prog->philos[i].id % 2 == 0)
 			usleep(1000);
-		if (my_get_time() - prog->philos[i].last_eat >= prog->ttd)
+		if (my_get_time() - prog->philos[i].last_eat >= prog->ttd
+			&& prog->philos[i].limits != prog->limits)
 		{
 			prog->end_flags = prog->philos[i].id;
 			return (-1);
-		}
-		if (prog->philos[i].limits == prog->limits)
-		{
-			prog->l_flags++;
-			return (0);
 		}
 		i++;
 	}
