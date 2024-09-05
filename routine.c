@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 08:26:03 by atovoman          #+#    #+#             */
-/*   Updated: 2024/09/05 13:51:02 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:25:47 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,11 @@ void	*philo_routine(void *arg)
 	{
 		if (philo_eating(prog, philo) == -1)
 			break ;
-		if (philo->limits == prog->limits)
-			break ;
 		if (philo_sleeping(prog, philo) == -1)
 			break ;
 		if (philo_thinking(prog, philo) == -1)
+			break ;
+		if (philo->limits == prog->limits)
 			break ;
 	}
 	return (NULL);
