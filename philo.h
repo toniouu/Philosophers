@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:27 by atovoman          #+#    #+#             */
-/*   Updated: 2024/09/03 15:09:33 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/12 11:23:37 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_prog
 	long			start;
 	int				end_flags;
 	int				l_flags;
+	t_mtx			write_lock;
+	t_mtx			dead_lock;
 	pthread_t		monitor;
 	t_philo			philos[250];
 	t_mtx			forks[250];
@@ -65,6 +67,8 @@ int		my_usleep(t_prog *prog, t_philo philo, long t);
 int		my_eating_usleep(t_prog *prog, long t);
 int		destroy_all(t_prog *prog);
 int		is_finished(t_prog *prog);
+int		check_end_flag(t_prog *prog);
+int		harmony(t_prog *prog, t_philo *philo);
 
 long	ft_atoi(char *nbr);
 long	my_get_time(void);

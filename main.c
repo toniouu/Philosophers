@@ -6,7 +6,7 @@
 /*   By: atovoman <atovoman@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 11:13:18 by atovoman          #+#    #+#             */
-/*   Updated: 2024/09/02 10:58:20 by atovoman         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:22:13 by atovoman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	destroy_all(t_prog *prog)
 		pthread_mutex_destroy(&prog->forks[i]);
 		i++;
 	}
+	pthread_mutex_destroy(&prog->write_lock);
+	pthread_mutex_destroy(&prog->dead_lock);
 	return (0);
 }
 
@@ -30,6 +32,10 @@ int	init_philo(t_prog *prog)
 	int		i;
 
 	i = 0;
+	if (pthread_mutex_init(&prog->write_lock, NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&prog->dead_lock, NULL) != 0)
+		return (-1);
 	while (i < prog->nbr)
 	{
 		if (pthread_create(&prog->philos[i].philo,
@@ -39,6 +45,7 @@ int	init_philo(t_prog *prog)
 			{
 				pthread_join(prog->philos[i].philo, NULL);
 			}
+			destroy_all(prog);
 			return (-1);
 		}
 		i++;
@@ -84,6 +91,8 @@ int	main(int ac, char **av)
 		return (print_error("Les arguments ne sont pas valides !"), -1);
 	if (init_prog(&prog) == -1 || init_philo(&prog) == -1)
 		return (0);
+	if (one_philo(&prog, &prog.philos[i]) == -1)
+		return (destroy_all(&prog), 0);
 	pthread_create(&prog.monitor, NULL, monitor_routine, &prog);
 	pthread_join(prog.monitor, res);
 	while (i < prog.nbr)
