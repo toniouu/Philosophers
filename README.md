@@ -1,4 +1,4 @@
-philosophers
+Philosophers
 
 philosophers est un projet de l'école 42 Antananarivo qui consiste à simuler un problème classique en informatique : le problème des philosophes. Ce projet m'a permis d'approfondir mes connaissances sur les threads, la synchronisation et la gestion de ressources partagées.
 
